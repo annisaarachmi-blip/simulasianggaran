@@ -179,12 +179,30 @@ th{background:#f1f5ff}
 }
 /* ================= RESPONSIF MOBILE ================= */
 @media (max-width: 600px) {
-  #hasil, #rekapProgram {
-    width: calc(100% - 20px); /* full width minus padding container */
-    padding: 12px;
-    margin-left: 0;
-    margin-right: 0;
-    box-sizing: border-box;   /* penting agar border & padding tidak bikin overflow */
+  #rekapProgram {
+    width: 100%;             /* full width di mobile */
+    padding: 12px;           /* padding lebih kecil */
+    margin-left: 0;           /* rata kiri */
+    margin-right: 0;          /* rata kiri */
+    box-sizing: border-box;
+  }
+
+  /* wrapper tabel scrollable */
+  #rekapProgram .table-wrap {
+    overflow-x: auto;        /* scroll jika tabel tetap lebar */
+  }
+
+  #rekapProgram table {
+    width: 100%;             /* tabel ikut lebar kotak */
+    min-width: 0;
+    table-layout: auto;
+  }
+
+  #rekapProgram th, #rekapProgram td {
+    padding: 4px 6px;       /* padding lebih kecil */
+    word-wrap: break-word;  /* teks panjang wrap */
+    white-space: normal;    /* jangan paksa tetap 1 baris */
+    font-size: 12px;        /* font lebih kecil */
   }
 }
 
