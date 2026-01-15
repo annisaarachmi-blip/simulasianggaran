@@ -14,7 +14,16 @@ body{
   margin:0;
   padding:10px;
 }
-
+.btn-reset{
+  background:#dc2626;
+}
+.actions{
+  display:flex;
+  gap:12px;
+}
+.actions button{
+  width:100%;
+}
 .container{
   max-width:960px;
   margin:auto;
@@ -48,7 +57,7 @@ label{
 }
 
 input,select,button{
-  width:100%;
+
   box-sizing:border-box;
   padding:10px;
   margin-top:6px;
@@ -141,6 +150,30 @@ th{background:#f1f5ff}
   .checkbox-row{grid-template-columns:1fr}
   h2{font-size:20px}
 }
+/* ================= FOOTER TABLE MOBILE ================= */
+.footer-table table{
+  min-width:auto; /* override */
+}
+
+@media(max-width:600px){
+  .footer-table th,
+  .footer-table td{
+    font-size:12px;
+    padding:6px;
+  }
+
+  .footer h4{
+    font-size:15px;
+    margin-bottom:6px;
+  }
+
+  .footer h5{
+    font-size:12px;
+    text-align:center;
+    color:#555;
+  }
+}
+
 </style>
 </head>
 
@@ -172,7 +205,7 @@ th{background:#f1f5ff}
   <!-- PU -->
   <div id="sasaranNonASN" class="hidden">
     <h4>PU</h4>
-    <label>Upah (Rp)</label>
+	    <label>Upah (Rp)</label>
     <input type="text" id="upahS" class="input-number" value="3.000.000">
 
     <label>Jumlah Orang</label>
@@ -203,6 +236,8 @@ th{background:#f1f5ff}
   </div>
 
   <button onclick="hitungSasaran()">Hitung</button>
+  <button type="button" class="btn-reset" onclick="resetSimulasi()">Reset</button>
+
 </div>
 
 <!-- ================= ANGGARAN ================= -->
@@ -288,6 +323,7 @@ th{background:#f1f5ff}
     <tr><td>JHT</td><td>5,7% Upah</td><td>Rp20.000</td></tr>
     <tr><td>JP</td><td>3% Upah</td><td>-</td></tr>
   </table>
+  <H5>Minimal 2 Program Wajib (JKK+JKM)
 </div>
 
 <div class="footer-note">© 2026. BPJS Ketenagakerjaan Kantor Wilayah Jawa Timur</div>
@@ -434,9 +470,12 @@ function hitungAnggaran(){
   kesimpulan.innerHTML=`Simulasi ini menunjukkan optimalisasi pemanfaatan anggaran. Total anggaran <b>Rp ${format(ang)}</b> digunakan sebesar <b>Rp ${format(total)}</b> dengan sisa <b>Rp ${format(sisa)}</b>.`;
   hasil.classList.remove('hidden');
 }
+
+function resetSimulasi(){
+  window.location.reload();
+}
 </script>
 </body>
 </html>
-
 
 
