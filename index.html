@@ -43,8 +43,8 @@ h3{margin-top:0}
 
 .section{
   border:1px solid #ddd;
-  padding:16px;
-  margin-top:20px;
+  padding:12px;
+  margin-top:14px;
   border-radius:14px;
 }
 
@@ -75,15 +75,15 @@ button{
 
 #rekapProgram h3{
   margin-top:0;
-  margin-bottom:10px; 
+  margin-bottom:4px; 
 }
 
 
 /* ================= CHECKBOX CARD ================= */
 .checkbox-row{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
+  grid-template-columns:repeat(2, max-content);
+  gap:10px;
   margin-top:12px;
 }
 
@@ -97,6 +97,7 @@ button{
   background:#f8f9fb;
   cursor:pointer;
   transition:.2s ease;
+  font-size:13px;  
 }
 
 .checkbox-card input{
@@ -124,13 +125,13 @@ button{
 table{
   width:100%;
   border-collapse:collapse;
-  margin-top:15px;
+  margin-top:6px;
   min-width:700px;
 }
 
 th,td{
   border:1px solid #ccc;
-  padding:8px;
+  padding:6px 8px;     /* ⬅️ lebih rapat */
   text-align:center;
   font-size:13px;
 }
@@ -145,6 +146,7 @@ th{background:#f1f5ff}
   font-size:14px;
 }
 
+
 .footer-note{
   text-align:center;
   font-size:12px;
@@ -156,6 +158,8 @@ th{background:#f1f5ff}
   .checkbox-row{grid-template-columns:1fr}
   h2{font-size:20px}
 }
+
+
 
 /* ================= FOOTER TABLE MOBILE ================= */
 .footer-table table{
@@ -185,6 +189,70 @@ th{background:#f1f5ff}
     color:#555;
   }
 }
+
+#tabelRekap{
+  min-width:0;
+  width:auto;
+  table-layout:auto;
+}
+
+.table-wrap table{
+  width:auto;
+  min-width:0;
+  table-layout:auto;
+}
+
+/* ===== PRINT SETTING ===== */
+@media print{
+
+  body{
+    background:#fff;
+  }
+
+  .container > *:not(#hasil){
+    display:none !important;
+  }
+
+  .print-area{
+    display:none !important;
+  }
+
+  #hasil{
+    display:block;
+  }
+   @page{
+    size:A4 portrait;
+    margin:12mm;
+  }
+  table{
+    min-width:0 !important;
+    table-layout:fixed;
+  }
+
+  th, td{
+    font-size:11px;
+    padding:6px;
+    word-wrap:break-word;
+  }
+}
+
+.btn-print{
+  background:#16a34a;      /* hijau */
+  color:#fff;
+  border:none;
+  border-radius:12px;
+  padding:10px 16px;
+  font-size:14px;
+  cursor:pointer;
+  transition:0.2s ease;
+}
+
+.btn-print:hover{
+  background:#15803d;      /* hijau lebih gelap */
+}
+
+
+
 
 </style>
 </head>
@@ -317,9 +385,10 @@ th{background:#f1f5ff}
   <div class="table-wrap">
     <table id="tabel">
       <tr>
-        <th>Jenis</th>
+        <th>Segmen</th>
         <th>Orang</th>
         <th>Bulan</th>
+		<th>Jumlah Program</th>
         <th>Iuran / Bulan</th>
         <th>Total</th>
       </tr>
@@ -341,7 +410,15 @@ th{background:#f1f5ff}
     </table>
   </div>
 </div>
+<div class="print-area hidden" id="printArea">
+  <button onclick="printHasil()" class="btn-print">
+    🖨️ Cetak Hasil Simulasi
+  </button>
 </div>
+</div>
+
+
+
 
 <div class="footer">
   <h4>Skema Iuran</h4>
@@ -455,6 +532,15 @@ tujuan.onchange=()=>{
 };
 
 /* ================= HITUNG ================= */
+
+function hitungJumlahProgram({ jht=false, jp=false }){
+  let jumlah = 2; // default JKK + JKM
+  if(jht) jumlah++;
+  if(jp) jumlah++;
+  return jumlah + 'P';
+}
+
+
 function hitungSasaran(){
   
   tabel.innerHTML=tabel.rows[0].outerHTML;
@@ -464,17 +550,41 @@ function hitungSasaran(){
     let up=getNum('upahS'),org=getNum('orgSNon'),bln=getNum('blnSNon');
     let tarif=0.0054+(jhtSNon.checked?0.057:0)+(jpSNon.checked?0.03:0);
     let per=up*tarif,sub=per*org*bln;total+=sub;
-    tabel.innerHTML+=`<tr><td>PU</td><td>${format(org)}</td><td>${format(bln)}</td><td>Rp ${format(per)}</td><td>Rp ${format(sub)}</td></tr>`;
+	
+	 let jumlahProgram = hitungJumlahProgram({
+    jht: jhtSNon.checked,
+    jp:  jpSNon.checked
+  });
+	
+	
+    tabel.innerHTML+=`	<tr><td>PU</td>
+	<td>${format(org)}</td>
+	<td>${format(bln)}</td>
+	<td>${jumlahProgram}</td>
+	<td>Rp ${format(per)}</td>
+	<td>Rp ${format(sub)}</td></tr>`;
   }
 
   if(s_bpu.checked){
     let org=getNum('orgSBPU'),bln=getNum('blnSBPU');
     let per=16800+(jhtSBPU.checked?20000:0),sub=per*org*bln;
 	total+=sub;
-    tabel.innerHTML+=`<tr><td>BPU</td><td>${format(org)}</td><td>${format(bln)}</td><td>Rp ${format(per)}</td><td>Rp ${format(sub)}</td></tr>`;
+	
+	let jumlahProgram = hitungJumlahProgram({
+    jht: jhtSBPU.checked
+  });
+	
+    tabel.innerHTML+=`
+	<tr><td>BPU</td>
+	<td>${format(org)}</td>
+	<td>${format(bln)}</td>
+	<td>${jumlahProgram}</td>
+	<td>Rp ${format(per)}</td>
+	<td>Rp ${format(sub)}</td>
+	</tr>`;
   }
 
-  tabel.innerHTML+=`<tr><th colspan="4">TOTAL</th><th>Rp ${format(total)}</th></tr>`;
+  tabel.innerHTML+=`<tr><th colspan="5">TOTAL</th><th>Rp ${format(total)}</th></tr>`;
   kesimpulan.innerHTML=`Hasil simulasi menunjukkan kebutuhan anggaran sebesar <b>Rp ${format(total)}</b> untuk mendukung perlindungan jaminan sosial ketenagakerjaan sesuai skema yang dipilih.`;
   
   let rekapPU = {};
@@ -490,6 +600,8 @@ if(s_nonasn.checked){
   rekapPU.JKM = up * 0.003 * org * bln;
   if(jhtSNon.checked) rekapPU.JHT = up * 0.057 * org * bln;
   if(jpSNon.checked) rekapPU.JP  = up * 0.03  * org * bln;
+
+
 }
 
 // BPU
@@ -500,12 +612,16 @@ if(s_bpu.checked){
   rekapBPU.JKK = 10000 * org * bln;
   rekapBPU.JKM = 6800  * org * bln;
   if(jhtSBPU.checked) rekapBPU.JHT = 20000 * org * bln;
+
+
+
 }
 
 tampilkanRekap({ pu: rekapPU, bpu: rekapBPU });
 
   
   hasil.classList.remove('hidden');
+  document.getElementById('printArea').classList.remove('hidden');
 }
 
 function hitungAnggaran(){
@@ -548,11 +664,17 @@ function hitungAnggaran(){
     if(jhtA.checked) rekapPU.JHT = up * tarifJHT * org * bln;
     if(jpA.checked)  rekapPU.JP  = up * tarifJP  * org * bln;
 
+let jumlahProgram = hitungJumlahProgram({
+  jht: jhtA.checked,
+  jp: jpA.checked
+});
+
     tabel.innerHTML += `
       <tr>
         <td>PU</td>
         <td>${format(org)}</td>
         <td>${format(bln)}</td>
+		<td>${jumlahProgram}</td>
         <td>Rp ${format(up * tarifTotal)}</td>
         <td>Rp ${format(sub)}</td>
       </tr>
@@ -583,11 +705,17 @@ function hitungAnggaran(){
 rekapBPU.JKM = 6800  * org * bln;
 if(jhtB.checked) rekapBPU.JHT = 20000 * org * bln;
 
+
+let jumlahProgram = hitungJumlahProgram({
+  jht: jhtB.checked
+});
+
     tabel.innerHTML += `
       <tr>
         <td>BPU</td>
         <td>${format(org)}</td>
         <td>${format(bln)}</td>
+		<td>${jumlahProgram}</td>
         <td>Rp ${format(tarifTotal)}</td>
         <td>Rp ${format(sub)}</td>
       </tr>
@@ -599,7 +727,7 @@ let sisa = ang - total;
 /* BARIS TOTAL */
 tabel.innerHTML += `
   <tr>
-    <th colspan="4">TOTAL</th>
+    <th colspan="5">TOTAL</th>
     <th>Rp ${format(total)}</th>
   </tr>
 `;
@@ -607,7 +735,7 @@ tabel.innerHTML += `
 /* BARIS SISA ANGGARAN */
 tabel.innerHTML += `
   <tr>
-    <th colspan="4">SISA ANGGARAN</th>
+    <th colspan="5">SISA ANGGARAN</th>
     <th>Rp ${format(sisa)}</th>
   </tr>
 `;
@@ -625,15 +753,20 @@ tabel.innerHTML += `
   });
 
   hasil.classList.remove('hidden');
+  document.getElementById('printArea').classList.remove('hidden');
+
 }
 
+function tampilkanRekap({pu = {}, bpu = {}}){
 
-function tampilkanRekap({pu={}, bpu={}}){
+  const hasPU  = Object.keys(pu).length > 0;
+  const hasBPU = Object.keys(bpu).length > 0;
+
   tabelRekap.innerHTML = `
     <tr>
       <th>Program</th>
-      <th id="colPU">PU</th>
-      <th id="colBPU">BPU</th>
+      ${hasPU ? '<th id="colPU">PU</th>' : ''}
+      ${hasBPU ? '<th id="colBPU">BPU</th>' : ''}
       <th>Total</th>
     </tr>
   `;
@@ -642,43 +775,43 @@ function tampilkanRekap({pu={}, bpu={}}){
   let grandTotal = 0;
 
   program.forEach(p=>{
-    let valPU = pu[p] || 0;
+    let valPU  = pu[p]  || 0;
     let valBPU = bpu[p] || 0;
-    let total = valPU + valBPU;
+    let total  = valPU + valBPU;
+
+    if(total === 0) return;
+
     grandTotal += total;
 
     tabelRekap.innerHTML += `
       <tr>
         <td>${p}</td>
-        <td>${valPU ? 'Rp ' + format(valPU) : '-'}</td>
-        <td>${valBPU ? 'Rp ' + format(valBPU) : '-'}</td>
+        ${hasPU  ? `<td>Rp ${format(valPU)}</td>`  : ''}
+        ${hasBPU ? `<td>Rp ${format(valBPU)}</td>` : ''}
         <td><b>Rp ${format(total)}</b></td>
       </tr>
     `;
   });
 
- let colSpanTotal = 1;
-if(Object.keys(pu).length > 0) colSpanTotal++;
-if(Object.keys(bpu).length > 0) colSpanTotal++;
+  const colspan = 1 + (hasPU ? 1 : 0) + (hasBPU ? 1 : 0);
 
-tabelRekap.innerHTML += `
-  <tr>
-    <th colspan="${colSpanTotal}">TOTAL</th>
-    <th>Rp ${format(grandTotal)}</th>
-  </tr>
-`;
-
-  // hide kolom PU / BPU jika tidak dipilih
-  if(Object.keys(pu).length === 0){
-    document.querySelectorAll('#colPU, #tabelRekap td:nth-child(2)').forEach(e=>e.style.display='none');
-  }
-  if(Object.keys(bpu).length === 0){
-    document.querySelectorAll('#colBPU, #tabelRekap td:nth-child(3)').forEach(e=>e.style.display='none');
-  }
+  tabelRekap.innerHTML += `
+    <tr>
+      <th colspan="${colspan}">TOTAL</th>
+      <th>Rp ${format(grandTotal)}</th>
+    </tr>
+  `;
 
   rekapProgram.classList.remove('hidden');
 }
 
+
+
+function printHasil(){
+  document.getElementById('hasil').classList.remove('hidden');
+  document.getElementById('rekapProgram').classList.remove('hidden');
+  window.print();
+}
 function resetSimulasi(){
   window.location.reload();
 }
