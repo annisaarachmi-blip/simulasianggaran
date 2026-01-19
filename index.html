@@ -7,6 +7,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* ================= LOGO ATAS KANAN ================= */
+.logo-top-right {
+  display: flex;
+  justify-content: flex-end; /* kanan */
+  margin-bottom: 6px;
+}
+
+.logo-top-right img {
+  width: 120px;    /* agak besar */
+  height: auto;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 600px) {
+  .logo-top-right img {
+    width: 90px;   /* sedikit lebih kecil di HP */
+  }
+}
 /* ================= BASE ================= */
 body{
   font-family:'Nunito Sans',sans-serif;
@@ -298,7 +316,11 @@ th{background:#f1f5ff}
   background:#15803d;      /* hijau lebih gelap */
 }
 
-
+@media print {
+  .logo-top-right {
+    display: flex !important;
+  }
+}
 
 
 </style>
@@ -306,6 +328,10 @@ th{background:#f1f5ff}
 
 <body>
 <div class="container">
+
+<div class="logo-top-right">
+  <img src="logo.png" alt="Logo BPJS Ketenagakerjaan">
+</div>
 
 <h2>Simulasi Penganggaran Iuran Jaminan Sosial Ketenagakerjaan</h2>
 <p style="text-align: justify"><font size="2px">Simulasi ini dapat digunakan oleh Pemerintah Daerah
@@ -483,7 +509,7 @@ th{background:#f1f5ff}
   </div>
 
 <p class="Catatan">
-  <font size="2px">Catatan <br>
+  <font size="1px">Catatan <br>
   - Minimal 2 Program Wajib (JKK + JKM) <br>
   - Simulasi JKK yang digunakan adalah 0,24% <br>
   - Dasar Upah BPU yang digunakan Rp 1.000.000,-<br>
