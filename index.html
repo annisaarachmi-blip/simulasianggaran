@@ -504,7 +504,7 @@ th{background:#f1f5ff}
 <div id="boxPerusahaan" class="section hidden">
  <h4>Sejahterakan Pekerja Sekitar Anda (SERTAKAN) </h4>
 <p style="text-align: justify"><font size="2px">Sesuai Peraturan Pemerintah Nomor 50 Tahun 2025, Pemerintah memberikan 
-<b>Relaksasi Iuran JKK-JKM 50%</b> bagi Peserta Baru dan Peserta Lanjutan segmen BPU (tidak termasuk bagi peserta BPU
+<b>Diskon Iuran JKK-JKM 50%</b> bagi Peserta Baru dan Peserta Lanjutan segmen BPU (tidak termasuk bagi peserta BPU
 yang iurannya bersumber dari APBN/APBD).
 <br> - Pekerja BPU Sektor Transportasi - <b>Periode Januari 2026 s/d Maret 2027</b>
 <br> - Pekerja BPU Sektor Non Transportasi - <b>Periode April 2026 s/d Desember 2026</b>
@@ -1375,7 +1375,7 @@ if(tarifJKKJKM === tarifJKKJKM_Diskon){
 
 ${bulanDiskon > 0 ? `
 <tr>
-  <td>Iuran Relaksasi 50%</td>
+  <td>Iuran Diskon 50%</td>
   <td>${format(org)}</td>
   <td>${format(bulanDiskon)}</td>
   <td>${jhtSBPU.checked ? '3P' : '2P'}</td>
@@ -1393,7 +1393,7 @@ ${bulanDiskon > 0 ? `
 `Simulasi SERTAKAN untuk ${format(org)} pekerja selama ${lama} bulan:
 <ul>
 <li>${bulanNormal} bulan iuran normal → Rp ${format(totalNormal)}</li>
-<li>${bulanDiskon} bulan iuran relaksasi 50% → Rp ${format(totalDiskon)}</li>
+<li>${bulanDiskon} bulan iuran Diskon 50% → Rp ${format(totalDiskon)}</li>
 </ul>
 <b>Total iuran yang dianggarkan: Rp ${format(total)}</b>`;
 
@@ -1495,6 +1495,7 @@ function resetSimulasi(){
 </script>
 </body>
 </html>
+
 
 
 
