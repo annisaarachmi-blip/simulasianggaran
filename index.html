@@ -8,6 +8,32 @@
 
 <style>
 /* ================= LOGO ATAS KANAN ================= */
+
+/* ===== 1 BARIS INPUT PERUSAHAAN ===== */
+.row-input-perusahaan{
+  display:flex;
+  gap:16px;
+  align-items:flex-end;
+  margin-top:12px;
+}
+
+.row-input-perusahaan .field{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.row-input-perusahaan input{
+  width:100%;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width:600px){
+  .row-input-perusahaan{
+    flex-direction:column;
+  }
+}
+
 .logo-top-right {
   display: flex;
   justify-content: flex-end; /* kanan */
@@ -45,7 +71,11 @@
   margin-top: 0;
 
 }
-
+input[type="month"]{
+  width:100%;
+  border:1px solid #ccc;
+  border-radius:12px;
+}
 
 
 /* ================= MOBILE ================= */
@@ -458,7 +488,7 @@ th{background:#f1f5ff}
 <h2>Simulasi Penganggaran Iuran Jaminan Sosial Ketenagakerjaan</h2>
 <p style="text-align: justify"><font size="2px">Simulasi ini dapat digunakan oleh Pemerintah Daerah
 	untuk membantu perencanaan dan estimasi kebutuhan anggaran perlindungan
-	Jaminan Sosial Ketenagakerjaan. Dapat digunakan juga oleh Perusahaan untuk ikut serta dalam Program Sejahterakan Pekerja Sekitar Anda (SERTAKAN) segmen Bukan Penerima Upah (BPU).
+	Jaminan Sosial Ketenagakerjaan bagi a Rentan. Dapat digunakan juga oleh Perusahaan untuk ikut serta dalam Program Sejahterakan Pekerja Sekitar Anda (SERTAKAN) segmen Bukan Penerima Upah (BPU).
  </font></p>
  
 <!-- ================= TUJUAN SIMULASI ================= -->
@@ -504,7 +534,7 @@ th{background:#f1f5ff}
 <div id="boxPerusahaan" class="section hidden">
  <h4>Sejahterakan Pekerja Sekitar Anda (SERTAKAN) </h4>
 <p style="text-align: justify"><font size="2px">Sesuai Peraturan Pemerintah Nomor 50 Tahun 2025, Pemerintah memberikan 
-<b>Diskon Iuran JKK-JKM 50%</b> bagi Peserta Baru dan Peserta Lanjutan segmen BPU (tidak termasuk bagi peserta BPU
+<b>Relaksasi Iuran JKK-JKM 50%</b> bagi Peserta Baru dan Peserta Lanjutan segmen BPU (tidak termasuk bagi peserta BPU
 yang iurannya bersumber dari APBN/APBD).
 <br> - Pekerja BPU Sektor Transportasi - <b>Periode Januari 2026 s/d Maret 2027</b>
 <br> - Pekerja BPU Sektor Non Transportasi - <b>Periode April 2026 s/d Desember 2026</b>
@@ -531,36 +561,25 @@ yang iurannya bersumber dari APBN/APBD).
 
   </div>
 
-  <!-- BULAN MULAI PERLINDUNGAN -->
-<div id="boxBulanMulai" class="hidden">
-  <label>Bulan Mulai Perlindungan</label>
-  <select id="bulanMulai">
-    <option value="">-- Pilih Bulan --</option>
-    <option value="2026-02">Feb 2026</option>
-    <option value="2026-03">Mar 2026</option>
-    <option value="2026-04">Apr 2026</option>
-    <option value="2026-05">Mei 2026</option>
-    <option value="2026-06">Jun 2026</option>
-    <option value="2026-07">Jul 2026</option>
-    <option value="2026-08">Agu 2026</option>
-    <option value="2026-09">Sep 2026</option>
-    <option value="2026-10">Okt 2026</option>
-    <option value="2026-11">Nov 2026</option>
-    <option value="2026-12">Des 2026</option>
-  </select>
+<div id="rowPerusahaanInput" class="hidden row-input-perusahaan">
+
+  <div class="field">
+    <label>Bulan Mulai Perlindungan</label>
+    <input type="month" id="bulanMulai" min="2026-01" max="2027-12">
+  </div>
+
+  <div class="field">
+    <label>Lama Perlindungan (bulan)</label>
+    <input type="number" id="lamaPerlindungan" min="1" value="3">
+  </div>
+
+  <div class="field">
+    <label>Jumlah Pekerja yang Dilindungi</label>
+    <input type="text" id="orgPerusahaan" class="input-number" value="100">
+  </div>
+
 </div>
 
-<!-- LAMA PERLINDUNGAN -->
-<div id="boxLamaPerlindungan" class="hidden">
-  <label>Lama Perlindungan (bulan)</label>
-  <input type="number" id="lamaPerlindungan" min="1" value="3">
-</div>
-
-<!-- JUMLAH PEKERJA PERUSAHAAN -->
-<div id="boxOrgPerusahaan" class="hidden">
-  <label>Jumlah Pekerja yang Dilindungi</label>
-  <input type="text" id="orgPerusahaan" class="input-number" value="100">
-</div>
 <button onclick="hitungPerusahaan()"
         id="btnHitungPerusahaan"
         class="hidden">
@@ -583,7 +602,7 @@ yang iurannya bersumber dari APBN/APBD).
 
   <!-- PU -->
   <div id="sasaranNonASN" class="hidden">
-    <h4>PU (Penerima Upah)</h4>
+    <h4>PU</h4>
 	    <label>Upah (Rp)</label>
     <input type="text" id="upahS" class="input-number" value="3.000.000">
 
@@ -601,7 +620,7 @@ yang iurannya bersumber dari APBN/APBD).
 
   <!-- BPU -->
   <div id="sasaranBPU" class="hidden">
-    <h4>BPU (Bukan Penerima Upah - Pekerja Rentan)</h4>
+    <h4>BPU (Pekerja Rentan)</h4>
 
     <label>Jumlah Orang</label>
     <input type="text" id="orgSBPU" class="input-number" value="100">
@@ -613,6 +632,14 @@ yang iurannya bersumber dari APBN/APBD).
       <div class="checkbox-card" id="cardJHTBPU"><input type="checkbox" id="jhtSBPU"> Tambah JHT (Rp20.000)</div>
     </div>
   </div>
+  
+  <label class="option-card">
+  <input type="checkbox" id="relaksasiBPU">
+  <span>
+    <strong>Relaksasi JKK–JKM 50%</strong>
+    <small>PP No. 50 Tahun 2025</small>
+  </span>
+</label>
 
   <button onclick="hitungSasaran()">Hitung</button>
   
@@ -640,7 +667,7 @@ yang iurannya bersumber dari APBN/APBD).
 
   <!-- PU Anggaran -->
   <div id="angNonASN" class="hidden">
-    <h4>PU (Penerima Upah)</h4>
+    <h4>PU</h4>
 
     <label>Upah (Rp)</label>
     <input type="text" id="upahA" class="input-number" value="3.000.000">
@@ -659,7 +686,7 @@ yang iurannya bersumber dari APBN/APBD).
 
   <!-- BPU Anggaran -->
   <div id="angBPU" class="hidden">
-    <h4>BPU (Bukan Penerima Upah - Pekerja Rentan)</h4>
+    <h4>BPU (Pekerja Rentan)</h4>
 
     <label id="lblOrgB">Jumlah Orang</label>
     <input type="text" id="orgB" class="input-number" value="100">
@@ -692,8 +719,9 @@ yang iurannya bersumber dari APBN/APBD).
       </tr>
     </table>
   </div>
-
+  <div class="summary" id="rincianPUbulanan" style="margin-top:8px; display:none;"></div>
   <div class="summary" id="kesimpulan"></div>
+
   <div id="rekapProgram" class="section hidden">
   <h3>Rekap Iuran per Program</h3>
 
@@ -781,16 +809,12 @@ const cardNonTransport = document.getElementById('cardNonTransport');
 
 // === EVENT SEKTOR → tampilkan input lanjutan ===
 sektorTransport.addEventListener('change', () => {
-  boxBulanMulai.classList.remove('hidden');
-  boxLamaPerlindungan.classList.remove('hidden');
-  boxOrgPerusahaan.classList.remove('hidden');
+  document.getElementById('rowPerusahaanInput').classList.remove('hidden');
   cekReadyHitungPerusahaan();
 });
 
 sektorNonTransport.addEventListener('change', () => {
-  boxBulanMulai.classList.remove('hidden');
-  boxLamaPerlindungan.classList.remove('hidden');
-  boxOrgPerusahaan.classList.remove('hidden');
+  document.getElementById('rowPerusahaanInput').classList.remove('hidden');
   cekReadyHitungPerusahaan();
 });
 
@@ -1086,11 +1110,26 @@ function hitungSasaran(){
 if(s_nonasn.checked) totalOrang += getNum('orgSNon');
 if(s_bpu.checked)    totalOrang += getNum('orgSBPU');
 
+let rincianPUBulanan = '';
+
+if(s_nonasn.checked){
+  let up = getNum('upahS');
+
+  let hasilPerBulan = hitungKontribusiPU_perBulan(
+      up,
+      jhtSNon.checked,
+      jpSNon.checked
+  );
+
+ 
+}
+
 kesimpulan.innerHTML =
 `Hasil simulasi menunjukkan kebutuhan anggaran sebesar 
 <b>Rp ${format(total)}</b> untuk perlindungan 
 <b>${format(totalOrang)} </b> peserta program jaminan sosial ketenagakerjaan 
 sesuai skema yang dipilih.`;
+
   let rekapPU = {};
 let rekapBPU = {};
 
@@ -1125,6 +1164,28 @@ tampilkanRekap({ pu: rekapPU, bpu: rekapBPU });
 
   
   hasil.classList.remove('hidden');
+  // === tampilkan rincian PU per bulan di bawah tabel ===
+const boxRincian = document.getElementById('rincianPUbulanan');
+boxRincian.style.display = 'none';
+boxRincian.innerHTML = '';
+
+if(s_nonasn.checked){
+  let up = getNum('upahS');
+
+  let hasilPerBulan = hitungKontribusiPU_perBulan(
+    up,
+    jhtSNon.checked,
+    jpSNon.checked
+  );
+
+  boxRincian.innerHTML = `
+    <b>Rincian Iuran PU per Orang per Bulan</b><br>
+    • Dibayar Pemberi Kerja : <b>Rp ${format(hasilPerBulan.perusahaan)}</b><br>
+    • Dibayar Pekerja : <b>Rp ${format(hasilPerBulan.pekerja)}</b>
+  `;
+  boxRincian.style.display = 'block';
+}
+
   document.getElementById('printArea').classList.remove('hidden');
 }
 
@@ -1375,7 +1436,7 @@ if(tarifJKKJKM === tarifJKKJKM_Diskon){
 
 ${bulanDiskon > 0 ? `
 <tr>
-  <td>Iuran Diskon 50%</td>
+  <td>Iuran Relaksasi 50%</td>
   <td>${format(org)}</td>
   <td>${format(bulanDiskon)}</td>
   <td>${jhtSBPU.checked ? '3P' : '2P'}</td>
@@ -1393,7 +1454,7 @@ ${bulanDiskon > 0 ? `
 `Simulasi SERTAKAN untuk ${format(org)} pekerja selama ${lama} bulan:
 <ul>
 <li>${bulanNormal} bulan iuran normal → Rp ${format(totalNormal)}</li>
-<li>${bulanDiskon} bulan iuran Diskon 50% → Rp ${format(totalDiskon)}</li>
+<li>${bulanDiskon} bulan iuran relaksasi 50% → Rp ${format(totalDiskon)}</li>
 </ul>
 <b>Total iuran yang dianggarkan: Rp ${format(total)}</b>`;
 
@@ -1475,6 +1536,34 @@ function tampilkanRekap({pu = {}, bpu = {}}){
   rekapProgram.classList.remove('hidden');
 }
 
+function hitungKontribusiPU_perBulan(upah, optJHT, optJP){
+  // Tarif dasar
+  const JKK = 0.0024;
+  const JKM = 0.003;
+
+  // Split JHT
+  const JHT_perusahaan = 0.037;
+  const JHT_pekerja    = 0.02;
+
+  // Split JP
+  const JP_perusahaan = 0.02;
+  const JP_pekerja    = 0.01;
+
+  let perusahaan = upah * (JKK + JKM);
+  let pekerja = 0;
+
+  if(optJHT){
+    perusahaan += upah * JHT_perusahaan;
+    pekerja    += upah * JHT_pekerja;
+  }
+
+  if(optJP){
+    perusahaan += upah * JP_perusahaan;
+    pekerja    += upah * JP_pekerja;
+  }
+
+  return { perusahaan, pekerja };
+}
 
 
 function printHasil(){
@@ -1495,8 +1584,4 @@ function resetSimulasi(){
 </script>
 </body>
 </html>
-
-
-
-
 
